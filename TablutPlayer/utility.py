@@ -25,17 +25,17 @@ class Handler:
         self.mainSocket.sendall(length.to_bytes(4, 'big') + msg.encode('UTF-8'))
 
         return self.recieveState()
-
+    
     def recieveState(self):
-        data = b''
+        data = bytes()
         while len(data) < 4:
-            packet = self.mainSocket.recv(4 - len(data))
-            if not packet:
-                data = None
-                break
+            packet = self.mainSocket.recv(1)
             data += packet
-        length = struct.unpack('>i', data)[0]
-        message = self.mainSocket.recv(length)
+        length = int.from_bytes(data[:4], byteorder='big')
+        message = bytes()
+        while len(message) < length:
+            message += self.mainSocket.recv(1)
+
         jsonState = json.loads(message)
         board, turn, kingPos = self.jsonTranslate(jsonState)
         return board, turn, kingPos
