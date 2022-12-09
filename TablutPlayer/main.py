@@ -8,7 +8,7 @@ DEBUG = False
 
 # Input management
 name = "Python Elite"
-role = str(sys.argv[1])
+role = str(sys.argv[1]).upper()
 timer = int(sys.argv[2])
 print("I'll be playing as " + role + " with a " + str(timer) + "s timer in the name of the " + name)
 if len(sys.argv) == 4:
@@ -44,7 +44,7 @@ AI = tablutAI.TablutAI(role, timer, depth=3, cutoff=4)
 
 winCondition = False
 
-if role == "WHITE" or role == "White" or role == "white":
+if role == "WHITE":
     print("Opening move, e3 to f3!")
     handler.sendMove(((2, 4), (2, 5)))
     board, turn, kingPos = handler.recieveState()
